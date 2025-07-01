@@ -1,5 +1,6 @@
 import express from 'express'
 import { WebSocketServer } from 'ws'
+import SignalServer from './managers/SignalServer';
 
 const PORT = 8000;
 
@@ -15,20 +16,23 @@ const server = app.listen(PORT, () => {
 
 // ws server setup
 
-const wss = new WebSocketServer({server});
+const wss = new WebSocketServer({server}); 
 
 wss.on("connection", (socket) => {
     console.log("Websokcet connection intialised!")
-    
+
     socket.on('error', (err) => {
         console.log("error", err);
     })
 
 
-    socket.on('message', (data) => {
-        const message = data.toString();
-        console.log(`data recived: ${message}`)
-    })
+    try {
+        new SignalServer(socket);
+    } catch (err) {
+        console.log(err);
+    }
 
-    socket.send("hello");
+    socket.on("close", () => {
+        console.log('connection closed')
+    });
 })
