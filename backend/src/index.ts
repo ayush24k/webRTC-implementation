@@ -17,17 +17,16 @@ const server = app.listen(PORT, () => {
 // ws server setup
 
 const wss = new WebSocketServer({server}); 
+const signalServer = new SignalServer();
 
 wss.on("connection", (socket) => {
-    console.log("Websokcet connection intialised!")
-
     socket.on('error', (err) => {
         console.log("error", err);
     })
 
 
     try {
-        new SignalServer(socket);
+        signalServer.handleConnection(socket);
     } catch (err) {
         console.log(err);
     }

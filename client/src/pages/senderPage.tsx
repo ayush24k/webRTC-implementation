@@ -6,13 +6,15 @@ export default function Sender() {
 
     useEffect(() => {
         const socket = new WebSocket("ws://localhost:8000");
-        setSocket(socket);
         socket.onopen = () => {
             socket.send(JSON.stringify({ type: 'sender' }))
         }
+
+        setSocket(socket);
+
     }, []);
 
-     async function handleSendVideo () {
+    async function handleSendVideo() {
         if (!socket) return;
         // todo
         //  create rtcpeerconncetion
@@ -22,13 +24,13 @@ export default function Sender() {
 
         const pc = new RTCPeerConnection();
         const offer = await pc.createOffer();
-        const sdp = await pc.setLocalDescription(offer);
+        await pc.setLocalDescription(offer);
 
-        socket?.send(JSON.stringify({type: "createOffer", sdp: sdp}));
+        socket?.send(JSON.stringify({ type: "createOffer", sdp: offer }));
 
         socket.onmessage = (event) => {
             const message = JSON.parse(event.data);
-
+            console.log(message);
             if (message.type === "createAnswer") {
                 pc.setRemoteDescription(message.sdp);
             }
