@@ -15,7 +15,6 @@ export default function Receiver() {
             const message = JSON.parse(event.data);
             if (message.type === 'createOffer') {
                 pc = new RTCPeerConnection();
-                await pc.setRemoteDescription(message.sdp);
 
                 pc.onicecandidate = (event) => {
                     console.log(event);
@@ -24,6 +23,7 @@ export default function Receiver() {
                     }
                 }
 
+                
                 const video = document.createElement("video");
                 document.body.appendChild(video);
                 pc.ontrack = (event) => {
@@ -31,6 +31,7 @@ export default function Receiver() {
                     video.play();
                 }
 
+                await pc.setRemoteDescription(message.sdp);
                 const answer = await pc.createAnswer();
                 await pc.setLocalDescription(answer);
 
