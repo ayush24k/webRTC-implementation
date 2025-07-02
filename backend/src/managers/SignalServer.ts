@@ -38,11 +38,11 @@ class SignalServer {
 
     private addIceCandidate(socket: WebSocket, message: MessageInterface) {
         if (socket === this.senderSocket) {
-            this.receiverSocket?.send(JSON.stringify({ type: 'iceCandidate', candidate: message.candidate }));
+            this.receiverSocket?.send(JSON.stringify({ type: 'addIceCandidate', candidate: message.candidate }));
         }
 
         if (socket === this.receiverSocket) {
-            this.senderSocket?.send(JSON.stringify({ type: 'iceCandidate', candidate: message.candidate }));
+            this.senderSocket?.send(JSON.stringify({ type: 'addIceCandidate', candidate: message.candidate }));
         }
     }
 
