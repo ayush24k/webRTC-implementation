@@ -1,6 +1,6 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
-import Receiver from "./pages/senderPage"
-import Sender from "./pages/receiverPage"
+import Sender from "./pages/senderPage"
+import Receiver from "./pages/receiverPage"
 
 function App() {
 
