@@ -2,10 +2,13 @@ import { useEffect, useState } from "react"
 
 export default function Sender() {
 
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
     const [socket, setSocket] = useState<null | WebSocket>(null);
 
     useEffect(() => {
-        const socket = new WebSocket("ws://localhost:8000");
+        console.log(backendUrl);
+        const socket = new WebSocket(backendUrl);
         socket.onopen = () => {
             socket.send(JSON.stringify({ type: 'sender' }))
         }

@@ -2,10 +2,12 @@ import { useEffect, useRef } from "react";
 
 export default function Receiver() {
 
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
-        const socket = new WebSocket("ws://localhost:8000");
+        const socket = new WebSocket(backendUrl);
 
         socket.onopen = () => {
             socket.send(JSON.stringify({ type: 'receiver' }))
