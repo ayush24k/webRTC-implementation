@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Receiver() {
+
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         const socket = new WebSocket("ws://localhost:8000");
@@ -23,12 +25,10 @@ export default function Receiver() {
                     }
                 }
 
-                
-                const video = document.createElement("video");
-                document.body.appendChild(video);
                 pc.ontrack = (event) => {
-                    video.srcObject = new MediaStream([event.track]);
-                    video.play();
+                    if (videoRef.current) {
+                        videoRef.current.srcObject = new MediaStream([event.track]);
+                    }
                 }
 
                 await pc.setRemoteDescription(message.sdp);
@@ -47,6 +47,7 @@ export default function Receiver() {
     return (
         <div>
             Receiver
+            <video autoPlay playsInline muted width={400} height={400} ref={videoRef}></video>
         </div>
     )
 }
